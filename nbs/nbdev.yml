@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "perform_stats"
+  site-url: "https://silvaac.github.io/perform_stats"
+  description: "Portfolio performance analytics"
+  repo-branch: main
+  repo-url: "https://github.com/silvaac/perform_stats"
