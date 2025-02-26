@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "perform_stats",
+    "section": "",
+    "text": "This collects a set of functions to perform portfolio performance analytics. I leverage quantstats package in order to build performance tables but organize the output in a simplified format with less statistics and graphs.",
+    "crumbs": [
+      "perform_stats"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "perform_stats",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nIf you are new to using nbdev here are some useful pointers to get you started.\n\nInstall perform_stats in Development mode\n# make sure perform_stats package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to perform_stats\n$ nbdev_prepare",
+    "crumbs": [
+      "perform_stats"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "perform_stats",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/silvaac/perform_stats.git\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages. Additionally you can find package manager specific guidelines on [conda][conda] and [pypi][pypi] respectively.",
+    "crumbs": [
+      "perform_stats"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "perform_stats",
+    "section": "How to use",
+    "text": "How to use\nFirst load the data. The library expects returns and not prices therefore it is up to the user to build returns before calling the functions.\nHere is an example of how to use the functions with daily returns from two files: ‘strategy.parquet’ and ‘benchmark.parquet’.\n\nimport pandas as pd\nfrom perform_stats.tables import *\n# Read in strategy\nstrategy = pd.read_parquet('strategy.parquet')\n# Read in benchmark\nbench = pd.read_parquet('benchmark.parquet')\n# Join them\ndf = pd.merge(strategy, bench, on='Date', how='inner')\ndf = df.tz_localize(None) # avoid issues w/qs library\nprint(df)\n\n             pnl_sim       ETH\nDate                          \n2016-05-18  0.000000  0.013846\n2016-05-19  0.000000  0.130501\n2016-05-20  0.000000 -0.048993\n2016-05-21  0.000000  0.000000\n2016-05-22  0.000000  0.000000\n...              ...       ...\n2025-02-02  0.055932 -0.079419\n2025-02-03 -0.055593  0.005008\n2025-02-04  0.014117 -0.052555\n2025-02-05  0.000663  0.020581\n2025-02-06  0.016759  0.004418\n\n[3187 rows x 2 columns]\n\n\nCall perf_stats and select the function you want to use. For example:\n\nperformance = perf_stats(df['pnl_sim'],benchmark=df['ETH'])\nret,risk = performance.return_performance()\nprint(ret)\nprint(risk)\n\n                 Benchmark    Strategy\nStart Period    2016-05-18  2016-05-18\nEnd Period      2025-02-06  2025-02-06\nAvg (Day ann.)        1.08        1.45\nVol (Day ann.)        0.97        0.63\nSharpe                1.11        2.29\nMTD                  -0.15        0.02\nYTD                  -0.16       -0.18\n3M                    0.16       -0.02\n6M                    0.16        0.05\n1Y                    0.22        0.47\n3Y (ann.)             0.01        0.49\n5Y (ann.)             0.42        0.67\n                   Benchmark Strategy\nMax Drawdown           -0.94    -0.46\nLongest DD Days         1186      220\nAvg. Drawdown          -0.17    -0.06\nAvg. Drawdown Days        83       15",
+    "crumbs": [
+      "perform_stats"
+    ]
+  },
+  {
+    "objectID": "tables.html",
+    "href": "tables.html",
+    "title": "perform_stats",
+    "section": "",
+    "text": "Performance tables. I am using quatstats package in order to build performance tables.\n\nsource\n\n\n\n perf_stats (x, benchmark=None, riskfree_rate=0, date_col='Date')\n\nInitialize self. See help(type(self)) for accurate signature.",
+    "crumbs": [
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "tables.html#tables",
+    "href": "tables.html#tables",
+    "title": "perform_stats",
+    "section": "",
+    "text": "Performance tables. I am using quatstats package in order to build performance tables.\n\nsource\n\n\n\n perf_stats (x, benchmark=None, riskfree_rate=0, date_col='Date')\n\nInitialize self. See help(type(self)) for accurate signature.",
+    "crumbs": [
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "tables.html#exemples",
+    "href": "tables.html#exemples",
+    "title": "perform_stats",
+    "section": "Exemples",
+    "text": "Exemples\nLoad sample data for demonstration. Remove tz info to avoid issues w/qs library functions.\n\nimport pandas as pd\nfrom perform_stats.tables import *\n# Read in strategy\nstrategy = pd.read_parquet('strategy.parquet')\n# Read in benchmark\nbench = pd.read_parquet('benchmark.parquet')\n# Join them\ndf = pd.merge(strategy, bench, on='Date', how='inner')\ndf = df.tz_localize(None) # avoid issues w/qs library\nprint(df)\n\n             pnl_sim       ETH\nDate                          \n2016-05-18  0.000000  0.013846\n2016-05-19  0.000000  0.130501\n2016-05-20  0.000000 -0.048993\n2016-05-21  0.000000  0.000000\n2016-05-22  0.000000  0.000000\n...              ...       ...\n2025-02-02  0.055932 -0.079419\n2025-02-03 -0.055593  0.005008\n2025-02-04  0.014117 -0.052555\n2025-02-05  0.000663  0.020581\n2025-02-06  0.016759  0.004418\n\n[3187 rows x 2 columns]\n\n\nUse class perf_stats to compute performance statistics and drawdown statistics.\n\nperformance = perf_stats(df['pnl_sim'],benchmark=df['ETH'])\nret,risk = performance.return_performance()\nprint(ret)\nprint(risk)\n\n                 Benchmark    Strategy\nStart Period    2016-05-18  2016-05-18\nEnd Period      2025-02-06  2025-02-06\nAvg (Day ann.)        1.08        1.45\nVol (Day ann.)        0.97        0.63\nSharpe                1.11        2.29\nMTD                  -0.15        0.02\nYTD                  -0.16       -0.18\n3M                    0.16       -0.02\n6M                    0.16        0.05\n1Y                    0.22        0.47\n3Y (ann.)             0.01        0.49\n5Y (ann.)             0.42        0.67\n                   Benchmark Strategy\nMax Drawdown           -0.94    -0.46\nLongest DD Days         1186      220\nAvg. Drawdown          -0.17    -0.06\nAvg. Drawdown Days        83       15\n\n\nDrawdown statistics\n\na,_,_ = performance.dd_stats()\nprint(a)\n\n          start      valley         end  days  max drawdown  99% max drawdown\n142  2021-12-10  2022-03-09  2022-07-17   220    -45.662228        -44.502931\n47   2018-01-10  2018-03-19  2018-04-18    99    -33.991516        -31.702138\n52   2018-06-23  2018-08-10  2018-12-05   166    -33.869321        -33.664651\n137  2021-05-23  2021-06-16  2021-08-08    78    -31.054742        -31.046791\n183  2024-12-12  2025-02-03  2025-02-06    57    -29.802162        -29.607148\n\n\nTrailing 180 days Annualized Volatility\n\nimport matplotlib.pyplot as plt\nroll_vol,roll_vol_bench = performance.roll_volatility(window=180)\nroll_vol.plot(title='90 Days Ann. Volatility',label='Strategy')\nroll_vol_bench.plot(label='Benchmark')\nplt.legend()\n\n\n\n\n\n\n\n\nTrailing 180 days Sharp Ratio with zero Risk-Free Rate\n\nroll_sr,roll_sr_bench = performance.roll_sharpe(window=180)\nroll_sr.plot(title='180 Days Ann. Sharpe, IR=0',label='Strategy')\nroll_sr_bench.plot(label='Benchmark')\nplt.legend()\n\n\n\n\n\n\n\n\nTrailing 180 days Beta and zero Risk-Free Rate. Beta against the benchmark is calculated as rolling linear regression coefficient between the strategy and benchmark. In practical terms, the algorithm is simply the covariance of the strategy with the benchmark divided by the variance of the benchmark.\n\nbeta = performance.roll_beta(window=180)\nbeta.plot(title='180 Days Beta',label='Strategy')\n\n\n\n\n\n\n\n\nTrailing 180 days Alpha and zero Risk-Free Rate. Alpha is the excess return of the strategy over the risk-free rate. In practical terms, the algorithm is simply the mean of the strategy minus the risk-free rate minus the benchmark’s mean times the beta.\n\nalpha = performance.roll_alpha(window=180)\nalpha.plot(title='180 Days Alpha',label='Strategy')\n\n\n\n\n\n\n\n\nTrailing annualized 180 days Average Return. Average return is calculated as the rolling mean of the strategy multiplied by the number of data points in one year.\n\naverage_return, average_return_bench = performance.roll_average_return(window=180)\naverage_return.plot(title='180 Days Average Return',label='Strategy')\naverage_return_bench.plot(label='Benchmark')\nplt.legend()\n\n\n\n\n\n\n\n\nMonthly Returns table with last column EOY values. Monthly returns are calculated by compounding daily returns.\n\nprint(performance.monthly_returns())\n\n\n\n\n\n\n\n\nJAN\nFEB\nMAR\nAPR\nMAY\nJUN\nJUL\nAUG\nSEP\nOCT\nNOV\nDEC\nEOY\n\n\n\n\n2016\n0.000000\n0.000000\n0.000000\n0.000000\n0.000000\n0.027083\n-0.002002\n-0.037465\n-0.039696\n0.120242\n0.033823\n0.179573\n0.294323\n\n\n2017\n0.245378\n0.298094\n1.705055\n0.303694\n1.442861\n0.307310\n0.499699\n0.334430\n-0.061243\n-0.013977\n0.104696\n0.534898\n56.187238\n\n\n2018\n0.244564\n-0.086251\n0.018412\n0.297282\n-0.004074\n0.155875\n-0.266392\n0.193204\n0.101950\n-0.127561\n0.200323\n0.963456\n2.430327\n\n\n2019\n0.149708\n0.277964\n0.072318\n0.042929\n0.147426\n0.204460\n0.305041\n-0.193311\n0.128122\n0.242724\n-0.028250\n0.065695\n2.470972\n\n\n2020\n0.247332\n0.294855\n0.322072\n-0.020038\n0.033682\n0.005880\n0.328446\n0.437837\n0.306867\n-0.112232\n0.331719\n0.044407\n5.706052\n\n\n2021\n0.218055\n0.274181\n0.034391\n0.014588\n0.149910\n0.258786\n-0.043322\n-0.029313\n-0.028842\n-0.015668\n0.307427\n-0.072388\n1.538337\n\n\n2022\n-0.163260\n-0.193772\n0.032276\n0.116749\n0.139956\n0.191485\n0.303305\n0.258969\n0.005962\n0.007318\n0.178209\n-0.031826\n1.003376\n\n\n2023\n0.073890\n0.075979\n-0.146340\n0.106180\n0.049479\n0.131816\n0.030242\n-0.047567\n-0.072191\n-0.010755\n0.042876\n-0.006438\n0.209451\n\n\n2024\n0.049431\n0.170827\n0.088214\n-0.060672\n0.250839\n-0.147195\n-0.078230\n0.184755\n0.152258\n-0.079885\n0.222245\n-0.016149\n0.865347\n\n\n2025\n-0.203651\n0.024563\n0.000000\n0.000000\n0.000000\n0.000000\n0.000000\n0.000000\n0.000000\n0.000000\n0.000000\n0.000000\n-0.184090",
+    "crumbs": [
+      "Tables"
+    ]
+  }
+]
